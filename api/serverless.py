@@ -6,8 +6,8 @@ import platform
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        s = self.path
-        url_components = parse.urlsplit(s)
+        paths = self.path
+        url_components = parse.urlsplit(paths)
         query = parse.parse_qsl(url_components.query)
         dic = dict(query)
         name = dic.get("name")
@@ -24,4 +24,5 @@ class handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "text/plain")
         self.end_headers()
         self.wfile.write(message.encode())
+        self.wfile.write(self.path[1:].encode())
         return
