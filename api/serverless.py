@@ -19,10 +19,11 @@ class handler(BaseHTTPRequestHandler):
 
         message += f"\nGreetings from Python version {platform.python_version()}"
         message += f"\nCurrent time: {datetime.now()}"
+        message += f"\n{self.path[:-1]}"
 
         self.send_response(200)
         self.send_header("Content-Type", "text/plain")
         self.end_headers()
         self.wfile.write(message.encode())
-        self.wfile.write(self.path[1:].encode())
+
         return
