@@ -1,0 +1,27 @@
+from http.server import BaseHTTPRequestHandler
+from datetime import datetime
+from urllib import parse
+import platform
+
+
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        s = self.path
+        url_components = parse.urlsplit(s)
+        query = parse.parse_qsl(url_components.query)
+        dic = dict(query)
+        name = dic.get("name")
+
+        if name:
+            message = "Hello, {}".format(name)
+        else:
+            message = "Hello, Stranger!"
+
+        message += f"\nGreetings from Python version {platform.python_version()}"
+        message += f"\nCurrent time: {datetime.now()}"
+
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain")
+        self.end_headers()
+        self.wfile.write(message.encode())
+        return
